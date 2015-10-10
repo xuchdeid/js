@@ -269,7 +269,7 @@ var id = function(x) {
 };
 
 var concat = curry(function(str, src) {
-	return src.concat(str);
+	return str.concat(src);
 });
 
 var Container = function(x) {
@@ -324,3 +324,119 @@ var safeHead = function(xs) {
 var streetName = compose(map(_.prop('street')), safeHead, _.prop('addresses'));
 
 console.log(streetName({addresses: [{street: "Shady Ln.", number: 4201}]}));
+
+var withdraw = curry(function(amount, account) {
+	return account.balance >= amount ?
+		Maybe.of({balance: account.balance - amount}) :
+		Maybe.of(null);
+});
+
+var maybe = curry(function(x, f, m) {
+	return m.isNothing() ? x : f(m.__value);
+});
+
+var Left = function(x) {
+	this.__value = x;
+};
+
+Left.of = function(x) {
+	return new Left(x);
+};
+
+Left.prototype.map = function(f) {
+	return this;
+};
+
+var Right = function(x) {
+	this.__value = x;
+};
+
+Right.of = function(x) {
+	return new Right(x);
+};
+
+Right.prototype.map = function(f) {
+	return Right.of(f(this.__value));
+};
+
+Right.of("rain").map(function(str) {
+	return "b" + str;
+});
+
+Left.of("rain").map(function(str) {
+	return "b" + str;
+});
+
+Right.of({host: 'localhost', port: 80}).map(_.prop('host'));
+
+var moment = require('moment');
+
+var getAge = curry(function(now, user) {
+	var birthdate = moment(user.birthdate, 'YYYY-MM-DD');
+	if (!birthdate.isValid()) return Left.of("Birth date could not be parsed");
+	return Right.of(now.diff(birthdate, 'year'));
+});
+
+//console.log(getAge(moment(), {birthdate: '2005-12-12'}));
+
+//console.log(getAge(moment(), {birthdate: '20010704'}));
+
+var fortune = compose(concat("If you survive, you will be "), add(1));
+
+//var zoltar = compose(map(console.log), map(fortune), getAge(moment()));
+
+//zoltar({birthdate: '2005-12-12'});
+
+//zoltar({birthdate: 'balloons!'});
+
+var either = curry(function(f, g, e) {
+	switch(e.constructor) {
+		case Left: return f(e.__value);
+		case Right: return g(e.__value);
+	}
+});
+
+var zoltar = compose(console.log, either(id, fortune), getAge(moment()));
+
+zoltar({birthdate: '2005-12-12'});
+
+zoltar({birthdate: 'balloons!'});
+
+var IO = function(f) {
+	this.__value = f;
+};
+
+IO.of = function(x) {
+	return new IO(function() {
+		return x;
+	});
+};
+
+IO.prototype.map = function(f) {
+	return new IO(_.compose(f, this.__value));
+};
+
+var io_window = new IO(function() {
+	return {innerWidth: 100, innerHeight:200};
+});
+
+io_window.map(function(win) {
+	return win.innerWidth;
+});
+
+var url = IO.of(function() { return "http://127.0.0.1?search=key&from=local"; });
+
+var toPairs = compose(split('='), split('&'));
+
+var params = compose(toPairs, last, split('?'));
+
+var eq = curry(function(str, src) {
+	return str == src;
+});
+
+var findParam = function(key) {
+	//return map(compose(Maybe.of, filter(compose(eq(key), head)), params), url);
+	return url.map(params).map(filter(compose(eq(key), head))).map(Maybe.of);
+};
+
+console.log(findParam("search").__value());
