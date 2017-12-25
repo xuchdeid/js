@@ -1,0 +1,5 @@
+{
+    "terminal.integrated.env.osx": {
+        "PATH": "/Users/xuchdeid/.platformio/penv/bin:/Users/xuchdeid/.rbenv/shims:/Users/xuchdeid/Library/Android/sdk/platform-tools/:/Library/Java/JavaVirtualMachines/jdk1.8.0_91.jdk/Contents/Home/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Users/xuchdeid/Library/Android/sdk/platform-tools:/usr/local/aria2/bin"
+    }
+}
