@@ -1,0 +1,87 @@
+.app {
+    margin: 0 auto;
+    background-color: bisque;
+}
+
+.app .boxes {
+    display: inline-block;
+    margin: 10px;
+    padding: 0;
+    font-size: 100%;
+    color: white;
+    border: 2px solid black;
+}
+
+.boxes:nth-child(1) {
+    background-color: red;
+    width: 300px;
+}
+
+.boxes:nth-child(2) {
+    background-color: blue;
+    width: 300px;
+}
+
+
+/* Transparent red */
+
+.pp p:nth-child(1) {
+    background-color: rgba(255, 0, 0, 0.5);
+    position: relative;
+    top: 30px;
+    left: 50px;
+}
+
+
+/* Transparent blue */
+
+.pp p:nth-child(2) {
+    background-color: rgb(255, 0, 0);
+    opacity: 0.5;
+}
+
+.first {
+    background-color: red;
+    width: 400px;
+    height: 200px;
+    top: 0;
+    left: 100px;
+}
+
+.second {
+    background-color: blue;
+    width: 200px;
+    height: 200px;
+    top: -150px;
+    left: 125px;
+}
+
+.third {
+    background-color: pink;
+    width: 200px;
+    height: 300px;
+    top: -375px;
+    left: 250px;
+}
+
+.first,
+.second,
+.third {
+    position: relative;
+}
+
+#winning {
+    background-color: red;
+    border: 1px solid black;
+}
+
+.better {
+    background-color: gray;
+    border: none !important;
+}
+
+p {
+    background-color: blue;
+    color: white;
+    padding: 5px;
+}
