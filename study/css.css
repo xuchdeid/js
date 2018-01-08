@@ -40,34 +40,49 @@
     opacity: 0.5;
 }
 
+.top {
+    width: 800px;
+    margin: 0 auto;
+    background: gray;
+}
+
 .first {
     background-color: red;
-    width: 400px;
-    height: 200px;
-    top: 0;
-    left: 100px;
+    width: 200px;
+    height: 400px;
+    padding: 3px;
+    float: left;
+    border: 5px solid yellow;
+    box-sizing: border-box;
+    background-clip: content-box;
 }
 
 .second {
-    background-color: blue;
-    width: 200px;
-    height: 200px;
-    top: -150px;
-    left: 125px;
+    background-size: 140px;
+    background-position: center;
+    background-image: url('https://mdn.mozillademos.org/files/11947/ff-logo.png');
+    background-color: gold;
+    width: 400px;
+    height: 400px;
+    float: left;
+}
+
+.second p {
+    text-align: center;
+    display: block;
+}
+
+.second p:hover {
+    outline: 10px solid white;
+    background: yellow;
+    color: black;
 }
 
 .third {
     background-color: pink;
-    width: 200px;
-    height: 300px;
-    top: -375px;
-    left: 250px;
-}
-
-.first,
-.second,
-.third {
-    position: relative;
+    width: 150px;
+    height: 400px;
+    float: right;
 }
 
 #winning {
@@ -84,4 +99,44 @@ p {
     background-color: blue;
     color: white;
     padding: 5px;
+}
+
+
+/* specificity: 0002 */
+
+p strong {
+    background-color: khaki;
+    color: green;
+}
+
+
+/* specificity: 0001 */
+
+strong {
+    text-decoration: underline;
+    color: red;
+}
+
+.blockApp p {
+    padding: 1em;
+    border: 1px solid black;
+}
+
+.blockApp span {
+    padding: 0.5em;
+    border: 1px solid green;
+    /* That makes the box visible, regardless of its type */
+    background-color: yellow;
+}
+
+.blockApp .inline {
+    display: inline;
+}
+
+.blockApp .block {
+    display: block;
+}
+
+.blockApp .inline-block {
+    display: inline-block;
 }
