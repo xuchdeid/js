@@ -1,0 +1,5 @@
+{
+    "terminal.integrated.env.osx": {
+        "PATH": "/Users/xuchdeid/.platformio/penv/bin:/Users/xuchdeid/Koalcat/Android/android-sdk-mac_x86/platform-tools/:/Library/Java/JavaVirtualMachines/jdk1.8.0_121.jdk/Contents/Home/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
+    }
+}
