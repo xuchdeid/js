@@ -44,6 +44,7 @@
     width: 800px;
     margin: 0 auto;
     background: gray;
+    display: none;
 }
 
 .first {
@@ -93,6 +94,7 @@
 .better {
     background-color: gray;
     border: none !important;
+    border-radius: 5px;
 }
 
 p {
@@ -131,6 +133,21 @@ strong {
 
 .blockApp .inline {
     display: inline;
+    font-weight: 500;
+    color: black;
+    text-transform: uppercase;
+    text-decoration: underline;
+    text-decoration-style: wavy;
+    text-shadow: -1px -1px 1px #aaa,
+             0px 4px 1px rgba(0,0,0,0.5),
+             4px 4px 5px rgba(0,0,0,0.7),
+             0px 0px 7px rgba(0,0,0,0.4);
+    text-align: justify;
+}
+
+p::first-line {
+    letter-spacing: 2px;
+    word-spacing: 4px;
 }
 
 .blockApp .block {
