@@ -1,0 +1,8 @@
+{
+  "scripts": {
+    "start": "node eastmoney.js"
+  },
+  "dependencies": {
+    "request": "^2.83.0"
+  }
+}
