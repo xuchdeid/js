@@ -19,7 +19,6 @@ Fund.prototype.gets = function(list) {
                     all.push(this.get(value));
                 });
                 return Promise.all(all);
-        
             }
         );
 }

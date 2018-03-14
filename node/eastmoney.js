@@ -1,4 +1,5 @@
 var Fund = require('./Fund').Fund;
+var EventEmitter = require('events').EventEmitter;
 
 'use strict';
 
@@ -13,19 +14,52 @@ function showLastValue(value) {
     if (data) {
         let list = data.split(',');
         let _value = list[list.length - 1];
-
+        let _last_value = list.length >= 2 ? list[list.length - 2] : _value;
+        let trend = ' →';
+        if (_last_value < _value) {
+            trend = ' ↗︎';
+        } else if (_last_value > _value) {
+            trend = ' ↘︎';
+        }
         if (_value > 0) {
-            printRedConsole(10, Expansion.SHORTNAME, "(" + _value + ")");
+            printRedConsole(30, Expansion.SHORTNAME, "(" + _value + ")" + trend);
         } else {
-            printGreenConsole(10, Expansion.SHORTNAME, "(" + _value + ")");
+            printGreenConsole(30, Expansion.SHORTNAME, "(" + _value + ")" + trend);
         }
     } else {
-        printRedConsole(10, Expansion.SHORTNAME, "(---)");
+        printRedConsole(30, Expansion.SHORTNAME, "(---)");
     }
 }
 
+function showTodayAll(value) {
+    let Expansion = value.Expansion;
+    let Datas = value.Datas;
+
+    if (Datas && Datas.length > 0) {
+        let process_datas = [];
+        Datas.map(data => {
+            let list = data.split(',');
+            process_datas.push(list[list.length - 1]);
+        });
+
+        let _data = '';
+        process_datas.map(data => {
+            _data += data + ',';
+        });
+
+        let last = process_datas[process_datas.length - 1];
+        if (last > 0) {
+            printRedConsole(10, Expansion.SHORTNAME, "(" + _data + ")");
+        } else {
+            printGreenConsole(10, Expansion.SHORTNAME, "(" + _data + ")");
+        }
+    } else {
+        printRedConsole(10, Expansion.SHORTNAME, "(---)");
+    }    
+}
+
 /**
- * 显示今天所有数据
+ * 显示今天所有数据（画图表）
  * @param {*} value 
  */
 function showTodayValues(value) {
@@ -138,16 +172,30 @@ function printGreenConsole(size, name, value) {
 var fund = new Fund();
 //var fcodes = ['161715', '241001', '001542', '501301', '004346', '000962', '420003', '001810', '160716', '001878', '164906', '210009', '519696', '378006', '162415', '000961', '378546', '001549', '519983', '377016', '002400', '001559', '002086'];
 var fcodes = ['519696', '001630', '000962', '001878', '004343', '501301', '210009', '164401', '001559', '001549', '000961'];
-fund.gets(fcodes)
-    .then(
-        results => {
-            results.map(value => {
-                showLastValue(value);
-            });
-        }
-    )
-    .catch(
-        error => {
-            console.log(error.message);
-        }
-    );
+var event = new EventEmitter(); 
+
+event.on('refresh', function() {
+    console.clear();
+    event.emit('next');
+    fund.gets(fcodes)
+        .then(
+            results => {
+                results.map(value => {
+                    showLastValue(value);
+                });
+            }
+        )
+        .catch(
+            error => {
+                console.log(error.message);
+            }
+        );
+    }
+);
+event.on('next', function() {
+    setTimeout(function() {
+        event.emit('refresh');
+    }, 60000);
+});
+
+event.emit('refresh');
