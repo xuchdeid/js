@@ -5,14 +5,14 @@ const request = require('request');
 
 module.exports = {
     Http: Http
-}
+};
 
 function Http(url) {
     this._url = url;
 }
 
 Http.prototype.get = function(url, params) {
-    var _url = this._url + buildGetRequest(url, params);
+    let _url = this._url + buildGetRequest(url, params);
     return new Promise((resolve, reject) => {
         request.get(_url, function (error, response, body) {
             if (!error && response.statusCode == 200) {
@@ -22,11 +22,11 @@ Http.prototype.get = function(url, params) {
             }
         });
     });
-}
+};
 
 function buildGetRequest(url, params) {
     url += '?';
-    var name;
+    let name;
     for (name in params) {
         url += name + '=' + params[name] + '&';
     }
