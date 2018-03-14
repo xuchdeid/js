@@ -3,6 +3,7 @@
     "start": "node eastmoney.js"
   },
   "dependencies": {
+    "console.table": "^0.10.0",
     "request": "^2.83.0",
     "xlsx": "^0.11.19"
   }

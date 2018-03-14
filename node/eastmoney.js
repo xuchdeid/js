@@ -1,5 +1,6 @@
 var Fund = require('./Fund').Fund;
 var EventEmitter = require('events').EventEmitter;
+require('console.table');
 
 'use strict';
 
@@ -28,6 +29,39 @@ function showLastValue(value) {
         }
     } else {
         printRedConsole(30, Expansion.SHORTNAME, "(---)");
+    }
+}
+
+/**
+ * 最新的数据
+ * @param {*} value 
+ */
+function getLastValue(value) {
+    let Expansion = value.Expansion;
+    let Datas = value.Datas;
+    let data = Datas[Datas.length - 1];
+    if (data) {
+        let list = data.split(',');
+        let _value = list[list.length - 1];
+        let _last_value = list.length >= 2 ? list[list.length - 2] : _value;
+        let trend = '  →';
+        if (_last_value < _value) {
+            trend = '  ↗︎';
+        } else if (_last_value > _value) {
+            trend = '  ↘︎';
+        }
+
+        return {
+            name: Expansion.SHORTNAME,
+            value: _value,
+            trend: trend
+        }
+    } else {
+        return {
+            name: Expansion.SHORTNAME,
+            value: '-------',
+            trend: '  -'
+        }
     }
 }
 
@@ -177,17 +211,23 @@ var event = new EventEmitter();
 event.on('refresh', function() {
     console.clear();
     event.emit('next');
+    console.time('net');
     fund.gets(fcodes)
         .then(
             results => {
+                var shows = [];
                 results.map(value => {
-                    showLastValue(value);
+                    //showLastValue(value);
+                    shows.push(getLastValue(value));
                 });
+                console.table(shows);
+                console.timeEnd('net');
             }
         )
         .catch(
             error => {
                 console.log(error.message);
+                console.timeEnd('net');
             }
         );
     }
