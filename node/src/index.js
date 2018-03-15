@@ -40,26 +40,50 @@ function getLastValue(value) {
     let Expansion = value.Expansion;
     let Datas = value.Datas;
     let data = Datas[Datas.length - 1];
+    let last_data = Datas.length >= 2 ? Datas[Datas.length - 2] : null;
+    let last_last_data = Datas.length >= 3 ? Datas[Datas.length - 3] : null;
     if (data) {
         let list = data.split(',');
-        let _value = list[list.length - 1];
-        let _last_value = list.length >= 2 ? list[list.length - 2] : _value;
-        let trend = '  →';
+        let raw = list[list.length - 1];
+        let _value = parseFloat(raw);
+        
+        let last_list = last_data ? last_data.split(',') : list;
+        let _last_value = parseFloat(last_list[last_list.length - 1]);
+
+        let last_last_list = last_last_data ? last_last_data.split(',') : list;
+        let _last_last_value = parseFloat(last_last_list[last_last_list.length - 1]);
+
+        let trend = ' ';
+        let tr = ['→', '↗︎', '↘︎'];
+        if (_last_last_value < _last_value) {
+            trend += tr[1];
+        } else if (_last_last_value > _last_value) {
+            trend += tr[2];
+        } else {
+            trend += tr[0];
+        }
+        trend += ' ';
         if (_last_value < _value) {
-            trend = '  ↗︎';
+            trend += tr[1];
         } else if (_last_value > _value) {
-            trend = '  ↘︎';
+            trend += tr[2];
+        } else {
+            trend += tr[0];
         }
 
         return {
             name: Expansion.SHORTNAME,
-            value: _value,
+            value0: _last_last_value,
+            value1: _last_value,
+            value2: _value,
             trend: trend
         };
     } else {
         return {
             name: Expansion.SHORTNAME,
-            value: '-------',
+            value0: '-------',
+            value1: '-------',
+            value2: '-------',
             trend: '  -'
         };
     }
@@ -205,7 +229,7 @@ function printGreenConsole(size, name, value) {
 
 let fund = new Fund();
 //var fcodes = ['161715', '241001', '001542', '501301', '004346', '000962', '420003', '001810', '160716', '001878', '164906', '210009', '519696', '378006', '162415', '000961', '378546', '001549', '519983', '377016', '002400', '001559', '002086'];
-let fcodes = ['519696', '001630', '000962', '001878', '004343', '501301', '210009', '164401', '001559', '001549', '000961'];
+let fcodes = ['519696', '001630', '000962', '001878', '004343', '501301', '210009', '164401', '001559', '001549', '000961', '001632'];
 let event = new EventEmitter(); 
 
 event.on('refresh', () => {
